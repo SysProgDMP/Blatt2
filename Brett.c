@@ -45,6 +45,7 @@ void print (struct t_brett *b){
 	k=0;
 	l=0;
 	for (i=0; i<= (2*b->n); i++){
+		l=0;
 		for (j=0; j<(b->n); j++){
 			if (i%2!= 1){
 				printf ("+---");
