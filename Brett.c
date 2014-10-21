@@ -1,15 +1,7 @@
-
+#include "Brett.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-
-
- struct t_brett {
-	int ** felder ;
-	int startpos_x;
-	int startpos_y;
-	int n;
-	};
 
 /*soll das Brett initialisieren und die Werte übergeben*/	
 	
@@ -25,7 +17,10 @@ int init_brett (struct t_brett *b, int n, int x, int y){
 	}
 	b->startpos_x=x;					/*übergabe x,y und n*/
 	b->startpos_y=y;
+	b->felder[x-1][y-1] = 1;
 	b->n=n;
+	/*b->besucht = x;*/
+	
 	return 0;
 }
 
@@ -58,9 +53,38 @@ void print (struct t_brett *b){
 		printf ("+\n");
 		if (i%2==1)k++;
 	}
-	
-
 }
+
+
+int besuchte_felder(struct t_brett *b){
+	int i,j,erg=0;
+	for (i=0; i<b->n ; i++){
+		for(j=0; j<b->n; j++){
+			if (b->felder[i][j] != 0) erg+=1;
+		}
+	}
+	return erg;
+}
+
+int frei (struct t_brett *b, int x, int y){
+	if ((b->startpos_x+x)<=0 || (b->startpos_y+y)<=0 || (b->startpos_y+y)>b->n || (b->startpos_x+x)>b->n || b->felder [b->startpos_x+x-1][b->startpos_y+y-1] != 0) return 0;
+	else return 1;
+}
+
+int neuer_sprung(struct t_brett *b, int x , int y){
+	b->startpos_x +=x;
+	b->startpos_y +=y;
+	b->felder [b->startpos_x-1][b->startpos_y-1] = besuchte_felder(b)+1;
+	return 0;
+}
+
+int entferne_sprung (struct t_brett *b, int x, int y){
+	b->felder [b->startpos_x-1][b->startpos_y-1]= 0;
+	b->startpos_x -=x;
+	b->startpos_y -=y;
+	return 0; 
+}
+
 
 int main (){
 	struct t_brett b;
@@ -68,6 +92,13 @@ int main (){
 	int x=1;
 	int y=1;
 	int i= init_brett (&b,n,x,y);
+	print (&b);
+	if (frei (&b, 2,3)) neuer_sprung(&b,2,3);
+	if (frei (&b, -2,0)) neuer_sprung(&b,-2,0);
+	print (&b);
+	entferne_sprung (&b,-2,0);
+	print (&b);
+	entferne_sprung (&b,2,3);
 	print (&b);
 	loesche_brett(&b);
 	printf ("%i", i);
