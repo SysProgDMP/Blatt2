@@ -19,7 +19,6 @@ int init_brett (struct t_brett *b, int n, int x, int y){
 	b->startpos_y=y;
 	b->felder[x-1][y-1] = 1;
 	b->n=n;
-	/*b->besucht = x;*/
 	
 	return 0;
 }
@@ -32,7 +31,6 @@ void loesche_brett (struct t_brett *b){
 		free (b->felder[i]);
 	}
 	/*hier eventuell noch Speicher von n, y und x freigebe*/
-
 }
 
 void print (struct t_brett *b){
@@ -71,39 +69,20 @@ int frei (struct t_brett *b, int x, int y){
 	else return 1;
 }
 
-int neuer_sprung(struct t_brett *b, int x , int y){
+void neuer_sprung(struct t_brett *b, int x , int y){
 	b->startpos_x +=x;
 	b->startpos_y +=y;
 	b->felder [b->startpos_x-1][b->startpos_y-1] = besuchte_felder(b)+1;
-	return 0;
 }
 
-int entferne_sprung (struct t_brett *b, int x, int y){
+void entferne_sprung (struct t_brett *b, int x, int y){
 	b->felder [b->startpos_x-1][b->startpos_y-1]= 0;
 	b->startpos_x -=x;
 	b->startpos_y -=y;
-	return 0; 
 }
 
 
-int main (){
-	struct t_brett b;
-	int n= 5;
-	int x=1;
-	int y=1;
-	int i= init_brett (&b,n,x,y);
-	print (&b);
-	if (frei (&b, 2,3)) neuer_sprung(&b,2,3);
-	if (frei (&b, -2,0)) neuer_sprung(&b,-2,0);
-	print (&b);
-	entferne_sprung (&b,-2,0);
-	print (&b);
-	entferne_sprung (&b,2,3);
-	print (&b);
-	loesche_brett(&b);
-	printf ("%i", i);
-	return 0;
-}
+
 
 
 
