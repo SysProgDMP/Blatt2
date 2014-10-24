@@ -7,6 +7,7 @@
 	
 int init_brett (struct t_brett *b, int n, int x, int y){
 	int i,j;
+	b->felder= malloc (n*sizeof(int*));
 	for (i=0;i<n; i++){
 		b->felder[i] = malloc(n*sizeof(int));  /* hier wird der Platz für das n*n Feld allokiert*/ 
 	}
@@ -30,7 +31,7 @@ void loesche_brett (struct t_brett *b){
 	for (i=0; i< b->n; i++){
 		free (b->felder[i]);
 	}
-	/*hier eventuell noch Speicher von n, y und x freigebe*/
+	free (b->felder);
 }
 
 void print (struct t_brett *b){
@@ -80,20 +81,3 @@ void entferne_sprung (struct t_brett *b, int x, int y){
 	b->startpos_x -=x;
 	b->startpos_y -=y;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
